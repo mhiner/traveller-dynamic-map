@@ -1,0 +1,22 @@
+{
+  "TRAVELLER_ASTROGATION.Tabs.World": "World",
+  "TRAVELLER_ASTROGATION.Settings.HomeSystem.Name": "Default home system",
+  "TRAVELLER_ASTROGATION.Settings.HomeSystem.Hint": "World the Astrogation scene opens on. A blank value uses Regina. When several worlds share the name, the Spinward Marches world is used.",
+  "TRAVELLER_ASTROGATION.Settings.JumpRating.Name": "Jump range",
+  "TRAVELLER_ASTROGATION.Settings.JumpRating.Hint": "Parsecs the ship can jump. Used for routes and the worlds listed within range.",
+  "TRAVELLER_ASTROGATION.Settings.ZoomMin.Name": "Minimum zoom",
+  "TRAVELLER_ASTROGATION.Settings.ZoomMin.Hint": "Smallest explore-map magnification. 1 is one chart pixel per screen pixel.",
+  "TRAVELLER_ASTROGATION.Settings.ZoomMax.Name": "Maximum zoom",
+  "TRAVELLER_ASTROGATION.Settings.ZoomMax.Hint": "Largest explore-map magnification. When this is below the minimum, the two values are swapped.",
+  "TRAVELLER_ASTROGATION.Settings.DarkMap.Name": "Dark view",
+  "TRAVELLER_ASTROGATION.Settings.DarkMap.Hint": "Draw the chart on black with white ink. Leave this off for the light chart.",
+  "TRAVELLER_ASTROGATION.Settings.SelectedHex.Name": "Selected hex",
+  "TRAVELLER_ASTROGATION.Settings.SelectedHex.Hint": "Draw the selected world's hex border in yellow.",
+  "TRAVELLER_ASTROGATION.Settings.CompendiumData.Name": "Use sector compendium",
+  "TRAVELLER_ASTROGATION.Settings.CompendiumData.Hint": "Use sectors saved in the Sector Data compendium when they are present. Sectors that are not packed still come from Traveller Map.",
+  "TRAVELLER_ASTROGATION.Settings.CompendiumOnly.Name": "Compendium only",
+  "TRAVELLER_ASTROGATION.Settings.CompendiumOnly.Hint": "Do not call Traveller Map. The map, find, and routes stay inside the sectors saved in Sector Data.",
+  "TRAVELLER_ASTROGATION.Settings.ImportSectors.Name": "Import sector data",
+  "TRAVELLER_ASTROGATION.Settings.ImportSectors.Label": "Import sectors",
+  "TRAVELLER_ASTROGATION.Settings.ImportSectors.Hint": "Save every sector in a grid box to the Sector Data compendium, including borders and trade routes. A sector already stored is kept, and the World Index is rebuilt."
+}

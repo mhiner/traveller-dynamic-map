@@ -1,0 +1,23 @@
+<p>Traveller Astrogation draws a Traveller star chart as its own scene. The chart is SVG, built from sector data, 
+    and it pans and zooms with the map. This bypaes pixij completely for a couple reasons:</p>
+<ul>
+    <li>Pixijs SVG performance is not optimal</li>
+    <li>Pixijs requires the image to be static, which would be problematic at the size of the Traveller map</li>
+    <li>It limits options on programmatic access (such as world summary) and synamic filters</li>
+</ul>
+<p>There are some limitations (actors, tiles, levels, etc... cannot be placed) but I considered it a reasonable compromise.</p>
+<p>The first time a GM loads a world with this module enabled, Foundry will add an Astrogation scene, which is the dynamic map. </p>
+<p>The right-hand sidebar gains a World tab for the duration of the scene. It shows the sheet for the currently selected world. 
+    Each player’s last view of the chart is restored the next time the scene opens.</p>
+<h2>Where the worlds come from</h2>
+<p><strong>Import sectors</strong> saves a rectangle of the sector grid into Sector Data, including borders and 
+    trade routes. To get coordinates zoom out on the Traveller map to sector view.  (-5,0) to (-3, 2) will give you 
+    the Spinward Marches and surrounding sections.  (-8, -4) to (7, 3) will give you most of the explored universe (~140 sectors)</p>
+<p><strong>Use sector compendium</strong> is on by default. Sectors saved in the Sector Data compendium 
+    are used first. Sectors that are not in the compendiums will be requested from Traveller Map as needed.
+    I encourage importing sectors that are in active use to improve performance and minimize spamming the Traveller Map API</p>
+<p><strong>Compendium only</strong> turns that requesting data from the Traveller Map API off. The map, search, and routes then stay inside the 
+    packed sectors, which limits the chart to the region you imported. Useful if you are adventuring within a constrined set of stars.</p>
+<h2>World actors</h2>
+<p>A World actor can be created from any map system (see Chat Commands), It will be stored  in a compendium called worlds grouped be sector and subsector. 
+    Any edit to the generated World actor will be reflected in the map, allowing GMs to customize the universe.</p>

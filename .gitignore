@@ -1,0 +1,6 @@
+node_modules
+.DS_Store
+dev/.bundle/
+dev/.sector-cache/
+foundry/dist/
+foundry/styles/map.css

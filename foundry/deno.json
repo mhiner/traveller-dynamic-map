@@ -1,0 +1,18 @@
+{
+  "imports": {
+    "@traveller/map-jsx/jsx-runtime": "../src/jsx-runtime.ts",
+    "preact": "npm:preact@^10.29.1",
+    "preact/": "npm:/preact@^10.29.1/",
+    "idb": "npm:idb@^8.0.3",
+    "@std/assert": "jsr:@std/assert@^1"
+  },
+  "tasks": {
+    "build": "deno run -A build.ts"
+  },
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "@traveller/map-jsx",
+    "strict": true
+  }
+}

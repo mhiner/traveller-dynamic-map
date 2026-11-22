@@ -1,0 +1,35 @@
+<p>Most handling of the map is through /astro chat commands. The command itself is not posted and the reply is whispered by default.</p>
+<p>Searches that match several worlds offer up to twelve buttons. The button centers the map, plots the route, or creates the actor, 
+    depending on the command that asked.</p>
+<h2>/astro help</h2>
+<p>Whisper this list of commands.</p>
+<h2>/astro find &lt;world&gt;</h2>
+<p>Search by name. The name needs at least two characters. Each button centers the map on that world.</p>
+<h2>/astro route j=[1-6] &lt;world&gt;</h2>
+<p>Plot a jump route from the current world to the named world. Omit <code>j=</code> to use the jump range from settings. The range, when
+     given, is a whole number from 1 through 6. The route starts at the world the map is on, or at the home world when the map has not chosen
+      one. An exact name match is used when several worlds match. Each button centers the map on that stop.</p>
+<h2>/astro borders</h2>
+<p>Show or hide political borders on the chart.</p>
+<h2>/astro gm snap</h2>
+<p>GM only. Center every other player on the world your map is centered on.</p>
+<h2>/astro gm filters</h2>
+<p>GM only. Give every other player your tech level, starport, and trade-code filters.</p>
+<h2>/astro actor &lt;world&gt;</h2>
+<p>Create a world actor in the worlds compendium, grouped by sector and subsector. Omit the name to use the currently selected
+     world, or the world the map is centered on when nothing is selected. If a World actor already exist for the world, it hex is left in place. 
+     The name, when given, needs at least two characters.</p>
+<h2>/astro filter</h2>
+<p>Whisper current setting for the tech level, starport, and trade-code filters.</p>
+<h2>/astro filter clear</h2>
+<p>Turn off tech, starport, and trade-code highlighting.</p>
+<h2>/astro filter TL=[0-F]</h2>
+<p>Highlight worlds at that tech level or higher. The digit runs from 0 through F.</p>
+<h2>/astro filter SP=[A-E]</h2>
+<p>Highlight worlds with that starport or better. The letter runs from E through A.</p>
+<h2>/astro filter Trade=[trade codes]</h2>
+<p>Highlight worlds that have the named trade codes. Separate codes with commas. A code the map does not know rejects the whole 
+    command. A field you leave out stays as it is. Tech, starport, and trade can be set together:</p>
+<p><code>/astro filter TL=A SP=C Trade=Ri,Ag</code></p>
+<p>The trade codes are Ag, As, Ba, De, Fl, Ga, Hi, Ht, Ic, In, Lo, Lt, Na, Ni, Po, Ri, Va, Wa, Ab, An, Cp, Cs, Cx, Cy, Da, Di, 
+    Fa, Fo, He, Mi, Mr, Pa, Pe, Ph, Pi, Pr, Px, Pz, Re, Rs, and Sa.</p>

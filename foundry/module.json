@@ -1,0 +1,58 @@
+{
+  "id": "traveller-astrogation",
+  "title": "Traveller Astrogation",
+  "description": "Shows the Traveller map as its own scene. The scene is rendered using SVG from sector data and pans with that map.",
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "14"
+  },
+  "authors": [
+    {
+      "name": "Kokopelli"
+    }
+  ],
+  "esmodules": [
+    "dist/module.js"
+  ],
+  "styles": [
+    {
+      "src": "styles/host.css",
+      "layer": "modules"
+    },
+    {
+      "src": "styles/map.css",
+      "layer": "modules"
+    },
+    {
+      "src": "styles/dock.css"
+    }
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "packs": [
+    {
+      "name": "documentation",
+      "label": "Documentation",
+      "path": "packs/documentation",
+      "type": "JournalEntry",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    }
+  ],
+  "packFolders": [
+    {
+      "name": "Traveller Astrogation",
+      "sorting": "a",
+      "packs": ["documentation"]
+    }
+  ]
+}

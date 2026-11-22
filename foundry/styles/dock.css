@@ -1,0 +1,284 @@
+/* World sidebar tab. Loaded after map.css so the narrow column wins over the wide find bar. */
+
+body:not(.traveller-astrogation-open) #sidebar nav [data-tab="travellerWorld"],
+body:not(.traveller-astrogation-open) #sidebar .tabs [data-tab="travellerWorld"],
+body:not(.traveller-astrogation-open) #sidebar > header [data-tab="travellerWorld"] {
+  display: none !important;
+}
+
+/* The tool palette covers the chart and does not drive it. It keeps its space so the player list stays at the bottom. */
+body.traveller-astrogation-open #scene-controls {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.traveller-astrogation-dock,
+.traveller-astrogation-dock *,
+.traveller-astrogation-dock *::before,
+.traveller-astrogation-dock *::after {
+  box-sizing: border-box;
+}
+
+#sidebar-content > .traveller-astrogation-dock.sidebar-tab {
+  background: var(--sidebar-background, #1a232e);
+  color: var(--ink, #f3ecdf);
+  width: var(--sidebar-width, 320px);
+  min-height: 0;
+  overflow: auto;
+}
+
+.traveller-astrogation-dock {
+  height: 100%;
+  min-height: 0;
+  overflow: auto;
+  background: var(--sidebar-background, #1a232e);
+  --bg: #10151b;
+  --panel: #1a232e;
+  --panel-2: #222d3b;
+  --ink: #f3ecdf;
+  --muted: #b3a793;
+  --line: #3a4a5e;
+  --accent: #e2a45a;
+  --accent-ink: #1c1308;
+  --good: #9dcc96;
+  --bad: #ef8b7a;
+  --font: "Avenir Next", "Segoe UI", sans-serif;
+  --display: Palatino, "Palatino Linotype", "Book Antiqua", serif;
+  color: var(--ink);
+  font: 16px/1.45 var(--font);
+  min-height: 0;
+}
+
+.traveller-astrogation-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.traveller-astrogation-dock .panel {
+  margin: 0;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.75rem 0.45rem;
+}
+
+.traveller-astrogation-dock h2,
+.traveller-astrogation-dock .world-search > h2 {
+  font-family: var(--display);
+  font-size: 1.15rem;
+  margin: 0;
+  white-space: normal;
+}
+
+.traveller-astrogation-dock button,
+.traveller-astrogation-dock input,
+.traveller-astrogation-dock select {
+  min-height: 2.4rem;
+}
+
+.traveller-astrogation-dock button.mode-switch,
+.traveller-astrogation-dock button.route-stop {
+  min-height: 0;
+}
+
+.traveller-astrogation-dock button,
+.traveller-astrogation-dock input,
+.traveller-astrogation-dock select,
+.traveller-astrogation-dock textarea {
+  font: inherit;
+  color: inherit;
+  background-image: none;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+.traveller-astrogation-dock button {
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.35rem 0.75rem;
+  cursor: pointer;
+}
+
+.traveller-astrogation-dock input,
+.traveller-astrogation-dock select,
+.traveller-astrogation-dock textarea {
+  background: #0e141b;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.35rem 0.55rem;
+}
+
+.traveller-astrogation-dock .world-search {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
+}
+
+.traveller-astrogation-dock .world-search > h2 { order: 0; }
+.traveller-astrogation-dock .world-search > input { order: 1; }
+.traveller-astrogation-dock .world-search > label.map-theme { order: 2; justify-content: flex-start; }
+.traveller-astrogation-dock .explore-filters,
+.traveller-astrogation-dock .world-search > .jump-lists { order: 3; }
+.traveller-astrogation-dock .world-search > .error,
+.traveller-astrogation-dock .world-search > .meta { order: 4; }
+.traveller-astrogation-dock .world-search > .list { order: 5; margin-top: 0; }
+
+.traveller-astrogation-dock .world-search > h2,
+.traveller-astrogation-dock .world-search > input,
+.traveller-astrogation-dock .world-search > label.map-theme,
+.traveller-astrogation-dock .world-search > .list,
+.traveller-astrogation-dock .world-search > .error,
+.traveller-astrogation-dock .world-search > .meta,
+.traveller-astrogation-dock .explore-filters,
+.traveller-astrogation-dock .jump-lists,
+.traveller-astrogation-dock .map-filters,
+.traveller-astrogation-dock .trade-filters {
+  grid-column: auto;
+  grid-row: auto;
+  width: 100%;
+  min-width: 0;
+  justify-self: stretch;
+}
+
+.traveller-astrogation-dock .explore-filters,
+.traveller-astrogation-dock .world-search > .jump-lists,
+.traveller-astrogation-dock .world-search details.within {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.55rem;
+}
+
+.traveller-astrogation-dock .map-filters,
+.traveller-astrogation-dock .trade-filters {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  gap: 0.55rem 0.75rem;
+}
+
+.traveller-astrogation-dock .world-search details.within[open] > .jump-route,
+.traveller-astrogation-dock .world-search details.within[open] > .meta,
+.traveller-astrogation-dock .world-search > .jump-lists > .meta {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.traveller-astrogation-dock .world-search > input,
+.traveller-astrogation-dock .list button {
+  width: 100%;
+}
+
+.traveller-astrogation-dock .world-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.traveller-astrogation-dock .world-profile {
+  padding: 0.7rem 0.45rem;
+}
+
+.traveller-astrogation-dock .world-facts {
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 0.35rem 0.5rem;
+}
+
+.traveller-astrogation-dock .world-facts dt {
+  white-space: nowrap;
+}
+
+.traveller-astrogation-dock .world-facts dd {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.traveller-astrogation-dock .world-profile-head {
+  flex-wrap: wrap;
+}
+
+.traveller-astrogation-dock .uwp-head {
+  flex-wrap: nowrap;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 0.75rem;
+}
+
+.traveller-astrogation-dock .uwp-head h3 {
+  flex: 0 0 auto;
+}
+
+.traveller-astrogation-dock .uwp-code {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-left: auto;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.traveller-astrogation-dock .uwp-table {
+  display: table;
+  width: 100%;
+  max-width: 100%;
+  margin: 0.55rem 0 0;
+  border-collapse: collapse;
+  table-layout: auto;
+  overflow: visible;
+}
+
+.traveller-astrogation-dock .uwp-table th,
+.traveller-astrogation-dock .uwp-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.3rem 0.35rem 0.3rem 0;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+.traveller-astrogation-dock .uwp-table th:first-child,
+.traveller-astrogation-dock .uwp-table td:first-child {
+  width: 1%;
+  white-space: nowrap;
+  padding-right: 0.6rem;
+}
+
+.traveller-astrogation-dock .uwp-table th:last-child,
+.traveller-astrogation-dock .uwp-table td:last-child {
+  width: auto;
+}
+
+.chat-message .astro-finds,
+body.game .app .chat-message .astro-finds {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  align-self: stretch;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  gap: 0.25rem;
+  margin-top: 0.4rem;
+}
+
+/* Foundry's app button rule sets display:unset, which drops width on these controls. */
+.chat-message .astro-finds button,
+body.game .app .chat-message .astro-finds button {
+  display: flex;
+  align-self: stretch;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  height: auto;
+  min-height: var(--input-height);
+  box-sizing: border-box;
+  justify-content: flex-start;
+  text-align: left;
+  white-space: normal;
+  line-height: 1.3;
+  cursor: pointer;
+}
