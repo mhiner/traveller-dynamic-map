@@ -13,7 +13,8 @@
   },
   "tasks": {
     "dev": "deno run -A dev/serve.ts",
-    "foundry": "deno run -A foundry/build.ts"
+    "foundry": "deno run -A foundry/build.ts",
+    "foundry-release": "deno run -A foundry/release.ts"
   },
   "publish": {
     "exclude": ["dev/**", "foundry/**"]
