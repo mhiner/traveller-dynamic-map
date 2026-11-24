@@ -29,7 +29,46 @@ declare global {
     folders?: { contents?: FoundryFolder[] };
     packs?: { contents?: FoundryPack[] };
     modules?: {
-      get(id: string): { api?: { importSectors?: () => Promise<void> } } | undefined;
+      get(id: string): {
+        active?: boolean;
+        api?: {
+          importSectors?: () => Promise<void>;
+          selectedSystem?: () => {
+            name: string;
+            sector: string;
+            hex: string;
+            worldX: number | null;
+            worldY: number | null;
+          } | null;
+          systemsWithin?: (
+            origin: {
+              name: string;
+              sector: string;
+              hex: string;
+              worldX: number | null;
+              worldY: number | null;
+            },
+            jump: number,
+          ) => Promise<Array<{
+            name: string;
+            sector: string;
+            hex: string;
+            worldX: number | null;
+            worldY: number | null;
+            parsecs: number;
+          }>>;
+          worldProfile?: (sector: string, hex: string) => Promise<{
+            name: string;
+            sector: string;
+            hex: string;
+            uwp: string;
+            tradeCodes: string[];
+            zone: "green" | "amber" | "red";
+            port: string;
+            population: number | null;
+          } | null>;
+        };
+      } | undefined;
     };
   };
 

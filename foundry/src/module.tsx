@@ -33,6 +33,7 @@ import { prerenderAstrogation } from "./prerender.ts";
 import { installWorldActorSync } from "./actorWorld.ts";
 import { fileAstrogationPacks } from "./pack.ts";
 import { flushScene, installSceneMemory, recallScene } from "./sceneState.ts";
+import { selectedSystem, systemsWithin, worldProfile } from "./shipLink.ts";
 import { forgetSectorPack, foundrySectorLibrary, onSectorPackChange } from "./sectorPack.ts";
 import "./types.ts";
 
@@ -166,7 +167,7 @@ Hooks.once("init", () => {
   installWorldActorSync();
   installSceneMemory();
   const mod = game.modules?.get(MODULE_ID);
-  if (mod) mod.api = { importSectors };
+  if (mod) mod.api = { importSectors, selectedSystem, systemsWithin, worldProfile };
   onSectorPackChange(() => {
     map.setSectorLibrary(foundrySectorLibrary());
     void prerenderAstrogation();

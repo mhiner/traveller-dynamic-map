@@ -262,6 +262,10 @@ export function reportSelection(next: MapFocus): void {
   ) return;
   selected = { ...next };
   noteExplore();
+  const hooks = (globalThis as {
+    Hooks?: { callAll?: (event: string, payload: MapFocus) => void };
+  }).Hooks;
+  hooks?.callAll?.("traveller-astrogation.selection", { ...selected });
 }
 
 /** True while the Astrogation scene is on screen. */
