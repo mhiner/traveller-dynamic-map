@@ -41,7 +41,7 @@ await rm(packDir, { recursive: true, force: true });
 const db = new ClassicLevel(packDir, { keyEncoding: "utf8", valueEncoding: "json" });
 await db.open();
 await db.put(`!journal!${journalId}`, {
-  name: "Traveller Astrogation",
+  name: "Koko's Traveller Astrogation",
   _id: journalId,
   folder: null,
   pages: pages.map((page) => page.id),

@@ -230,6 +230,7 @@ declare global {
     name: string;
     type: string;
     folder?: { id?: string } | string | null;
+    update?(data: { name: string }): Promise<unknown>;
   }
 
   interface FoundryScene {

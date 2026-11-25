@@ -2,7 +2,10 @@ import { MODULE_ID } from "./constants.ts";
 import "./types.ts";
 
 /** Compendium sidebar folder for this module's packs. */
-export const COMPENDIUM_FOLDER = "Traveller Astrogation";
+export const COMPENDIUM_FOLDER = "Koko's Traveller Astrogation";
+
+/** Folder name from before the module title gained the Koko prefix. */
+const PREVIOUS_COMPENDIUM_FOLDER = "Traveller Astrogation";
 
 /** Ownership applied to a compendium this module creates. Players can read it. The GM owns it. */
 const READERS = { GAMEMASTER: "OWNER", ASSISTANT: "OWNER", TRUSTED: "OBSERVER", PLAYER: "OBSERVER" };
@@ -57,12 +60,19 @@ export async function fileAstrogationPacks(): Promise<void> {
   }
 }
 
-/** The sidebar folder, created when this world does not have one yet. */
+/** The sidebar folder, created when this world does not have one yet. An older folder is renamed in place. */
 async function astrogationFolder(): Promise<FoundryFolder | null> {
-  const existing = (game.folders?.contents ?? []).find((folder) =>
-    folder.type === "Compendium" && folder.name === COMPENDIUM_FOLDER && !folderParent(folder)
-  );
+  const existing = compendiumFolder(COMPENDIUM_FOLDER);
   if (existing) return existing;
+  const previous = compendiumFolder(PREVIOUS_COMPENDIUM_FOLDER);
+  if (previous?.update) {
+    try {
+      await previous.update({ name: COMPENDIUM_FOLDER });
+      return previous;
+    } catch (error) {
+      console.error(`${MODULE_ID} | Could not rename the ${PREVIOUS_COMPENDIUM_FOLDER} compendium folder.`, error);
+    }
+  }
   try {
     const created = await Folder.create({ name: COMPENDIUM_FOLDER, type: "Compendium", sorting: "a" });
     const folder = Array.isArray(created) ? created[0] : created;
@@ -81,6 +91,13 @@ async function filePack(pack: FoundryPack, folder: FoundryFolder): Promise<void>
   } catch (error) {
     console.error(`${MODULE_ID} | Could not move ${pack.metadata.label} into ${COMPENDIUM_FOLDER}.`, error);
   }
+}
+
+/** A top-level compendium folder with this name. */
+function compendiumFolder(name: string): FoundryFolder | undefined {
+  return (game.folders?.contents ?? []).find((folder) =>
+    folder.type === "Compendium" && folder.name === name && !folderParent(folder)
+  );
 }
 
 /** The parent id of a folder, or nothing when the folder is at the top. */

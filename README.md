@@ -8,7 +8,7 @@ A Deno library that draws a Traveller star chart from sector data. Two directori
 
 ## foundry
 
-`foundry` is the Foundry Virtual Tabletop module Traveller Astrogation. It shows the chart as its own scene, with sector data in a compendium and world actors in another. `deno task foundry` builds the module. `deno task foundry-release 0.1.1` sets that version in `module.json` and writes `foundry/traveller-astrogation-0.1.1.zip`. The Foundry directory is not part of the published library.
+`foundry` is the Foundry Virtual Tabletop module Koko's Traveller Astrogation. It shows the chart as its own scene, with sector data in a compendium and world actors in another. `deno task foundry` builds the module. `deno task foundry-release 0.1.1` sets that version in `module.json` and writes `foundry/traveller-astrogation-0.1.1.zip`. The Foundry directory is not part of the published library.
 
 ## Fair use
 
