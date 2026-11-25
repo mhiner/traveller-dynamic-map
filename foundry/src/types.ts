@@ -4,6 +4,7 @@ declare global {
   const Hooks: {
     once(hook: string, fn: (...args: unknown[]) => unknown): number;
     on(hook: string, fn: (...args: unknown[]) => unknown): number;
+    off(hook: string, id: number): void;
   };
 
   const game: {
@@ -192,8 +193,12 @@ declare global {
     name: string;
     type: string;
     pack?: string | null;
+    flags?: Record<string, Record<string, unknown> | undefined>;
+    getFlag?(scope: string, key: string): unknown;
     folder?: { id?: string } | string | null;
     system?: {
+      moduleBay?: Record<string, unknown>;
+      breakawayBay?: Record<string, unknown>;
       world?: {
         location?: {
           sector?: string;

@@ -17,12 +17,14 @@ import {
   STARPORT_CODES,
   TECH_CODES,
   toggleBorders,
+  toggleShips,
   type ExploreFilters,
   type MapFocus,
 } from "./astro.ts";
 import { DEFAULT_HOME, DEFAULT_JUMP, GM_FILTERS, GM_SNAP, HOME_SYSTEM, JUMP_RATING, MODULE_ID } from "./constants.ts";
 import { loadHomeWorld } from "./home.ts";
 import { currentMapWorld } from "./screen.tsx";
+import { shipDesignActive } from "./shipMarks.ts";
 import "./types.ts";
 
 /** Search hits whispered for one /astro find. */
@@ -202,7 +204,7 @@ async function handleAstro(text: string): Promise<void> {
   try {
     const action = parseAstro(text);
     if (action.type === "help") {
-      await whisper(helpText());
+      await whisper(helpText({ ships: shipDesignActive() }));
       return;
     }
     if (action.type === "error") {
@@ -227,6 +229,15 @@ async function handleAstro(text: string): Promise<void> {
     if (action.type === "borders") {
       const shown = toggleBorders();
       await whisper(shown ? "Borders on." : "Borders off.");
+      return;
+    }
+    if (action.type === "ships") {
+      if (!shipDesignActive()) {
+        await whisper("The ship design module is not active.");
+        return;
+      }
+      const shown = toggleShips();
+      await whisper(shown ? "Ships on." : "Ships off.");
       return;
     }
     if (action.type === "snap") {

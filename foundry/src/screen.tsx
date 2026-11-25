@@ -2,8 +2,10 @@ import { useEffect, useRef, useState } from "preact/hooks";
 import type { AstrogationProps, MapInstance } from "../../src/instance.tsx";
 import type { MapRoute, World as MapWorld } from "../../src/world.ts";
 import { loadHomeWorld } from "./home.ts";
+import type { ChartShip } from "../../src/ui/shipMark.ts";
 import { bordersShown, consumeMapFocus, exploreFilters, mapFocus, replaceFilters, reportMapView, reportSelection, setBorders, subscribeExplore } from "./astro.ts";
 import { loginChartCenter, recallScene, rememberCamera, rememberQuery, restoredScene } from "./sceneState.ts";
+import { resolveShipMarks, watchShipActors } from "./shipMarks.ts";
 
 interface Memory {
   currentWorld: MapWorld | null;
@@ -46,6 +48,7 @@ export function Screen({ view: View, listen, homeName, jumpRating, zoomMin, zoom
   const [route, setRoute] = useState(memory.route);
   const [filters, setFilters] = useState(() => exploreFilters());
   const [borders, setBorderState] = useState(() => bordersShown());
+  const [ships, setShips] = useState<ChartShip[]>([]);
   const [aimed, setAimed] = useState(() => mapFocus());
   const homeNameRef = useRef(homeName);
   homeNameRef.current = homeName;
@@ -71,11 +74,27 @@ export function Screen({ view: View, listen, homeName, jumpRating, zoomMin, zoom
   }, [listen]);
 
   useEffect(() => {
-    return subscribeExplore(() => {
+    let current = true;
+    let ticket = 0;
+    const loadShips = () => {
+      const mine = ++ticket;
+      void resolveShipMarks().then((marks) => {
+        if (current && mine === ticket) setShips(marks);
+      });
+    };
+    loadShips();
+    const stopExplore = subscribeExplore(() => {
       setFilters(exploreFilters());
       setBorderState(bordersShown());
       setAimed(mapFocus());
+      loadShips();
     });
+    const stopActors = watchShipActors(loadShips);
+    return () => {
+      current = false;
+      stopExplore();
+      stopActors();
+    };
   }, []);
 
   useEffect(() => {
@@ -137,6 +156,7 @@ export function Screen({ view: View, listen, homeName, jumpRating, zoomMin, zoom
             reportView: reportMapView,
             reportSelection,
             chartHex: loginChartCenter(currentWorld),
+            ships,
             restore: restoredScene(),
             reportQuery: rememberQuery,
             reportCamera: rememberCamera,

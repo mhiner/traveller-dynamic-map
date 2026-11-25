@@ -1,6 +1,6 @@
 /// <reference lib="deno.ns" />
 import { assertEquals } from "@std/assert";
-import { describeFilters, mergeFilters, parseAstro, type ExploreFilters } from "./astro.ts";
+import { describeFilters, helpText, mergeFilters, parseAstro, type ExploreFilters } from "./astro.ts";
 
 const current: ExploreFilters = { tech: "C", starport: "A", trade: ["Ag"] };
 
@@ -24,6 +24,17 @@ Deno.test("/astro", async (test) => {
     assertEquals(parseAstro("borders"), { type: "borders" });
     assertEquals(parseAstro("BORDERS"), { type: "borders" });
     assertEquals(parseAstro("borders on").type, "error");
+  });
+
+  await test.step("toggles ships with a bare command", () => {
+    assertEquals(parseAstro("ships"), { type: "ships" });
+    assertEquals(parseAstro("SHIPS"), { type: "ships" });
+    assertEquals(parseAstro("ships on").type, "error");
+  });
+
+  await test.step("lists ships in help only when ship design is active", () => {
+    assertEquals(helpText().includes("/astro ships"), false);
+    assertEquals(helpText({ ships: true }).includes("/astro ships — show or hide blueprint ships"), true);
   });
 
   await test.step("accepts the GM snap and filter commands", () => {

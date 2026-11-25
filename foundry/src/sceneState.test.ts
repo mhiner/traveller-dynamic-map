@@ -13,6 +13,7 @@ function scene(revision: number, name = "Regina"): SavedScene {
     selected: { name, sector: "Spinward Marches", hex: "1910", worldX: -110, worldY: -70 },
     filters: { tech: "C", starport: null, trade: ["Ag", "Cp"] },
     borders: false,
+    ships: false,
     query: "reg",
   };
 }
@@ -33,6 +34,7 @@ Deno.test("scene state", async (test) => {
     assertEquals(saved?.zoom, 3);
     assertEquals(saved?.filters, { tech: "C", starport: null, trade: ["Ag", "He"] });
     assertEquals(saved?.borders, false);
+    assertEquals(saved?.ships, false);
     assertEquals(saved?.selected?.name, "Efate");
   });
 

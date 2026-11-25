@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "../runtime.ts";
 import { chartCovers, chartOpenHex, chartRadiusForView, clampExploreZoom, exploreZoomBounds, HEX_FLAT_HALF, hexOutline, hexPixel, viewportParsecs, worldNearPixel, type ChartWorld, type JumpChartView } from "../jumpChart.ts";
+import { SHIP_IMAGE } from "./shipImage.ts";
+import { placedShips, shipMarkPlacement, type ChartShip } from "./shipMark.ts";
 import { mapInk } from "../mapInk.ts";
 import { loadExploreChart, peekExploreChart, releaseExploreSectors } from "../travellerMap.ts";
 import { WorldIcon } from "./JumpChartMap.tsx";
@@ -98,7 +100,7 @@ function borderDash(style: JumpChartView["borders"][number]["dash"]): string | u
 }
 
 /** Hexes, routes, and world icons. Camera changes update the view box and leave this tree mounted. */
-function ExploreChartBody({ chart, minTech, minStarport, tradeCodes, drawBorders, dark, selected }: {
+function ExploreChartBody({ chart, minTech, minStarport, tradeCodes, drawBorders, dark, selected, ships }: {
   chart: JumpChartView;
   minTech: number | null;
   minStarport: string | null;
@@ -106,6 +108,7 @@ function ExploreChartBody({ chart, minTech, minStarport, tradeCodes, drawBorders
   drawBorders: boolean;
   dark: boolean;
   selected: { sector: string; hex: string } | null;
+  ships: readonly ChartShip[];
 }) {
   const shaded = new Set<string>();
   for (const world of chart.worlds) {
@@ -115,6 +118,10 @@ function ExploreChartBody({ chart, minTech, minStarport, tradeCodes, drawBorders
   const marked = selected
     ? chart.worlds.find((world) => world.sector === selected.sector && world.hex === selected.hex)
     : undefined;
+  const marks = placedShips(chart, ships);
+  const hull = shipMarkPlacement();
+  const shipInk = mapInk("#111", dark);
+  const shipPaper = mapInk("#fff", dark);
   return (
     <>
       {stipples.length > 0 ? (
@@ -177,12 +184,31 @@ function ExploreChartBody({ chart, minTech, minStarport, tradeCodes, drawBorders
       {chart.worlds.map((world) => (
         <WorldIcon key={`${world.sector}|${world.hex}|${world.x}`} world={world} dark={dark} />
       ))}
+      {marks.map((mark) => (
+        <g key={`ship-${mark.key}`} style={{ pointerEvents: "none" }}>
+          <g transform={`translate(${mark.x + hull.dx} ${mark.y + hull.dy}) rotate(120)`}>
+            <image href={SHIP_IMAGE} x={-hull.width / 2} y={-hull.height / 2} width={hull.width} height={hull.height} />
+          </g>
+          {mark.count > 1 ? (
+            <text
+              x={mark.x + hull.dx}
+              y={mark.y + hull.dy}
+              fill={shipInk}
+              stroke={shipPaper}
+              strokeWidth={1.4}
+              style={{ textAnchor: "middle", dominantBaseline: "central", fontSize: 8, fontWeight: 700, paintOrder: "stroke" }}
+            >
+              {mark.count}
+            </text>
+          ) : null}
+        </g>
+      ))}
     </>
   );
 }
 
 /** Chart centered on a world, filling the space beside the world profile. Dragging moves the view. The scroll wheel zooms. A click selects a world. */
-export function ExploreMap({ worldX, worldY, focus, keep, minTech, minStarport, tradeCodes, drawBorders, dark, zoomMin, zoomMax, restore = null, chartHex = null, onView, onSelect, selected = null }: {
+export function ExploreMap({ worldX, worldY, focus, keep, minTech, minStarport, tradeCodes, drawBorders, dark, zoomMin, zoomMax, restore = null, chartHex = null, onView, onSelect, selected = null, ships = [] }: {
   worldX: number;
   worldY: number;
   /** Bumps when a search selection should center the map, including a repeat of the same world. */
@@ -211,6 +237,8 @@ export function ExploreMap({ worldX, worldY, focus, keep, minTech, minStarport, 
   onSelect: (sector: string, hex: string) => void;
   /** When set, that world's hex border is drawn yellow. */
   selected?: { sector: string; hex: string } | null;
+  /** Blueprint ships to draw. A hex outside this chart is omitted. */
+  ships?: readonly ChartShip[];
 }) {
   const frame = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -452,7 +480,7 @@ export function ExploreMap({ worldX, worldY, focus, keep, minTech, minStarport, 
             if (hit) onSelect(hit.sector, hit.hex);
           }}
         >
-          <ExploreChartBody chart={disk.chart} minTech={minTech} minStarport={minStarport} tradeCodes={tradeCodes} drawBorders={drawBorders} dark={dark} selected={selected} />
+          <ExploreChartBody chart={disk.chart} minTech={minTech} minStarport={minStarport} tradeCodes={tradeCodes} drawBorders={drawBorders} dark={dark} selected={selected} ships={ships} />
         </svg>
       ) : null}
     </div>

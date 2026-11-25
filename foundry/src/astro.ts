@@ -27,6 +27,7 @@ export type AstroAction =
   | { type: "find"; name: string }
   | { type: "route"; jump: number | null; name: string }
   | { type: "borders" }
+  | { type: "ships" }
   | { type: "snap" }
   | { type: "sync-filters" }
   | { type: "actor"; name: string | null }
@@ -36,7 +37,7 @@ export type AstroAction =
   | { type: "error"; message: string };
 
 /** The /astro help text whispered back to the player. */
-const HELP = [
+const HELP_LINES = [
   "Astrogation commands",
   "/astro help — show this list",
   "/astro find <world> — search by name",
@@ -50,11 +51,16 @@ const HELP = [
   "/astro filter TL=[0-F] — highlight worlds at or above TL",
   "/astro filter SP=[A-E] — highlight worlds with that starport or better",
   `/astro filter Trade=${FIND_TRADE_CODES.join(",")} — highlight worlds with selected trade codes`,
-].join("\n");
+];
 
-/** The /astro command list. */
-export function helpText(): string {
-  return HELP;
+/** The /astro command list. The ships line is included only when ship design is active. */
+export function helpText(options?: { ships?: boolean }): string {
+  const lines = [...HELP_LINES];
+  if (options?.ships) {
+    const borders = lines.findIndex((line) => line.startsWith("/astro borders"));
+    lines.splice(borders + 1, 0, "/astro ships — show or hide blueprint ships");
+  }
+  return lines.join("\n");
 }
 
 /** Turn the text after /astro into one action, or an error the player can read. */
@@ -73,6 +79,11 @@ export function parseAstro(input: string): AstroAction {
   if (borders) {
     if (borders[1]?.trim()) return { type: "error", message: "Usage: /astro borders" };
     return { type: "borders" };
+  }
+  const ships = text.match(/^ships(?:\s+([\s\S]*))?$/i);
+  if (ships) {
+    if (ships[1]?.trim()) return { type: "error", message: "Usage: /astro ships" };
+    return { type: "ships" };
   }
   const gm = text.match(/^gm(?:\s+([\s\S]*))?$/i);
   if (gm) return parseGm(gm[1]?.trim() ?? "");
@@ -184,6 +195,8 @@ function parseFilterAssignments(rest: string): AstroAction {
 let filters: ExploreFilters = { ...EMPTY_FILTERS, trade: [] };
 /** True while allegiance borders are drawn. */
 let borders = true;
+/** True while blueprint ships are drawn. Hidden until a player asks. */
+let ships = false;
 /** World a chat command asked the map to center, until the map consumes it. */
 let focus: MapFocus | null = null;
 /** Bumped each time focus changes, so the map notices a second request for the same world. */
@@ -219,6 +232,25 @@ export function toggleBorders(): boolean {
   borders = !borders;
   emit();
   return borders;
+}
+
+/** Whether blueprint ships are drawn. */
+export function shipsShown(): boolean {
+  return ships;
+}
+
+/** Show or hide blueprint ships and tell the screen. */
+export function setShips(shown: boolean): void {
+  if (ships === shown) return;
+  ships = shown;
+  emit();
+}
+
+/** Flip blueprint ships and tell the screen. Returns the new value. */
+export function toggleShips(): boolean {
+  ships = !ships;
+  emit();
+  return ships;
 }
 
 /** The world a command asked the map to center, and the id of that request. */
@@ -328,11 +360,13 @@ export function onExploreChange(listener: () => void): void {
 export function hydrateExplore(next: {
   filters: ExploreFilters;
   borders: boolean;
+  ships: boolean;
   view: MapFocus | null;
   selected: MapFocus | null;
 }): void {
   filters = { tech: next.filters.tech, starport: next.filters.starport, trade: [...next.filters.trade] };
   borders = next.borders;
+  ships = next.ships;
   view = next.view ? { ...next.view } : null;
   selected = next.selected ? { ...next.selected } : null;
 }

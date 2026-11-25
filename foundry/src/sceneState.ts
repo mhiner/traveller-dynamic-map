@@ -2,6 +2,7 @@ import { chartOpenHex, clampExploreZoom } from "../../src/jumpChart.ts";
 import type { World } from "../../src/world.ts";
 import {
   bordersShown,
+  shipsShown,
   EMPTY_FILTERS,
   exploreFilters,
   hydrateExplore,
@@ -26,6 +27,7 @@ export interface SavedScene {
   selected: MapFocus | null;
   filters: ExploreFilters;
   borders: boolean;
+  ships: boolean;
   query: string;
 }
 
@@ -66,6 +68,7 @@ export function recallScene(): SavedScene | null {
     hydrateExplore({
       filters: saved.filters,
       borders: saved.borders,
+      ships: saved.ships,
       view: saved.center,
       selected: saved.selected,
     });
@@ -130,6 +133,7 @@ export function installSceneMemory(): void {
     const patch: Partial<SavedScene> = {
       filters: exploreFilters(),
       borders: bordersShown(),
+      ships: shipsShown(),
     };
     const center = mapView();
     const selected = selectedWorld();
@@ -192,6 +196,7 @@ export function parseScene(value: unknown): SavedScene | null {
     selected: parseFocus(data.selected),
     filters: parseFilters(data.filters),
     borders: data.borders !== false,
+    ships: data.ships === true,
     query,
   };
 }
@@ -225,6 +230,7 @@ function remember(patch: Partial<SavedScene>): void {
     selected: patch.selected !== undefined ? patch.selected : previous?.selected ?? null,
     filters: patch.filters ?? previous?.filters ?? { ...EMPTY_FILTERS, trade: [] },
     borders: patch.borders ?? previous?.borders ?? true,
+    ships: patch.ships ?? previous?.ships ?? false,
     query: patch.query ?? previous?.query ?? "",
   };
   if (previous && sameScene(previous, next)) return;
@@ -243,6 +249,7 @@ function sameScene(left: SavedScene, right: SavedScene): boolean {
     && left.x === right.x
     && left.y === right.y
     && left.borders === right.borders
+    && left.ships === right.ships
     && left.query === right.query
     && sameFocus(left.center, right.center)
     && sameFocus(left.selected, right.selected)

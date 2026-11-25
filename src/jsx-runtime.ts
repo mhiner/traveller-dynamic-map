@@ -99,7 +99,17 @@ interface TextAttrs extends Common<SVGTextElement> {
   x?: number | string;
   y?: number | string;
   fill?: string;
+  stroke?: string;
+  strokeWidth?: string | number;
   dy?: number | string;
+}
+
+interface ImageAttrs extends Common<SVGImageElement> {
+  href?: string;
+  x?: number | string;
+  y?: number | string;
+  width?: number | string;
+  height?: number | string;
 }
 
 interface PatternAttrs extends Common<SVGPatternElement> {
@@ -129,6 +139,7 @@ export namespace JSX {
     h2: Common<HTMLHeadingElement>;
     h3: Common<HTMLHeadingElement>;
     header: Common<HTMLElement>;
+    image: ImageAttrs;
     input: InputAttrs;
     label: Common<HTMLLabelElement>;
     li: Common<HTMLLIElement>;

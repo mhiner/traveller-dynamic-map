@@ -30,6 +30,14 @@
       "jsr:@std/assert@1",
       "npm:idb@^8.0.3",
       "npm:preact@^10.29.1"
-    ]
+    ],
+    "links": {
+      "jsr:@traveller/dynamic-map@0.1.0": {
+        "dependencies": [
+          "jsr:@std/assert@1",
+          "npm:idb@^8.0.3"
+        ]
+      }
+    }
   }
 }

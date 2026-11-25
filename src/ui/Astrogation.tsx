@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "../runtime.ts";
 import { cacheSector, jumpRoute, loadWorld, loadWorldProfile, searchWorlds, worldsWithin, type SearchHit } from "../travellerMap.ts";
 import { ExploreMap } from "./ExploreMap.tsx";
+import type { ChartShip } from "./shipMark.ts";
 import { ExploreFilters, shadeFromControl, type MapShade } from "./ExploreFilters.tsx";
 import { JumpRouteColumn, PlottedRoute, WorldsWithinJump } from "./RouteColumn.tsx";
 import { DEFAULT_SECTOR_LIMIT } from "../worldCache.ts";
@@ -83,6 +84,8 @@ export interface ExploreMapControl {
   reportCamera?: (view: { zoom: number; x: number; y: number }) => void;
   /** Hex the first chart was built around. The dev page omits this. */
   chartHex?: { worldX: number; worldY: number } | null;
+  /** Blueprint ships drawn on the explore chart. The dev page omits this. */
+  ships?: readonly ChartShip[];
 }
 
 /** A search hit already knows where the world sits, even when the loaded record does not. */
@@ -451,6 +454,7 @@ export function Astrogation({ jumpRating, currentWorld, destination, route, inJu
         selected={selectedOutline && exploreWorld && !exploreWorld.manual && exploreWorld.sector && exploreWorld.hex
           ? { sector: exploreWorld.sector, hex: exploreWorld.hex }
           : null}
+        ships={mapControl?.ships ?? []}
       />
     </div>
   ) : null;
