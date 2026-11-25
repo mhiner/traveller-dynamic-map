@@ -2,7 +2,7 @@
   "id": "traveller-astrogation",
   "title": "Koko's Traveller Astrogation",
   "description": "Shows the Traveller map as its own scene. The scene is rendered using SVG from sector data and pans with that map.",
-  "version": "0.1.1",
+  "version": "0.1.4",
   "compatibility": {
     "minimum": "13",
     "verified": "14"
